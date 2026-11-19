@@ -1,5 +1,7 @@
 <?php 
 
+    require_once __DIR__ . '/controllers/FuncionarioController.php';
+
     abstract class Funcionario {
         private $nome;
         private $email;
