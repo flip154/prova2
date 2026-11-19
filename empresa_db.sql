@@ -1,3 +1,5 @@
+require_once '.../../config/database.php';
+
 CREATE DATABASE empresa_db;
 USE empresa_db;
 
