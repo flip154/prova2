@@ -1,12 +1,10 @@
-CREATE DATABASE IF NOT EXISTS empresa_db;
-
+CREATE DATABASE empresa_db;
 USE empresa_db;
 
-CREATE TABLE IF NOT EXISTS funcionarios (
-    id INT NOT NULL AUTO_INCREMENT,
-    nome VARCHAR(100) NOT NULL,
-    email VARCHAR(150) NOT NULL,
-    salario DECIMAL(10,2) NOT NULL,
-    tipo VARCHAR(30) NOT NULL,
-    PRIMARY KEY (id)
+CREATE TABLE funcionarios(
+    id INT NOT NULL PRIMARY KEY,
+    nome [VARCHAR](100) NOT NULL,
+    email [VARCHAR](150) NOT NULL,
+    tipo[VARCHAR](50) NOT NULL,
+    salario DECIMAL(10,2) NOT NULL
 );
