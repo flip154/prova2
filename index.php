@@ -49,6 +49,7 @@
             return $this->getSalario() * 0.15;
         }
     }
+    
 ?>
 
 <!DOCTYPE html>
@@ -59,6 +60,16 @@
     <title>Prova Poo</title>
 </head>
 <body>
-    
+    <form method="POST">
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" name="nome">
+        <p></p>
+        <label for="email">Email:</label>
+        <input type="text" id="email" name="email">
+        <p></p>
+        <label for="salario">Salário:</label>
+        <input type="text" id="salario" name="salario">
+        <p></p>
+        <button type="submit">Cadastrar</button>
 </body>
 </html>
