@@ -29,4 +29,14 @@ input{
     color: #ffffff;
 }
 
+th{
+    color: #ffffff;
+    text-align: center;
+}
+
+td{
+    color: #ffffff;
+    text-align: center;
+}
+
 
