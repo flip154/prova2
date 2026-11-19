@@ -2,65 +2,78 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro de Funcionários</title>
 </head>
 <body>
-    <h1>Funcionários</h1>
+    <h1>Cadastro de Funcionários</h1>
 
-    <?php if (!empty($dados['mensagem'])): ?>
-        <p><?= htmlspecialchars($dados['mensagem']) ?></p>
+    <?php if ($mensagem != ''): ?>
+        <p><?= $mensagem ?></p>
     <?php endif; ?>
 
-    <form method="POST">
-        <label for="nome">Nome:</label>
-        <input type="text" id="nome" name="nome" required>
+    <?php if (isset($_GET['excluir'])): ?>
+        <h2>Confirmar exclusão</h2>
+        <p>Deseja excluir este funcionário?</p>
 
-        <label for="email">E-mail:</label>
-        <input type="email" id="email" name="email" required>
+        <form method="POST">
+            <input type="hidden" name="confirmarExclusao" value="sim">
+            <input type="hidden" name="id" value="<?= $_GET['excluir'] ?>">
+            <button type="submit">Confirmar exclusão</button>
+        </form>
 
-        <label for="tipoFuncionario">Tipo:</label>
-        <select id="tipoFuncionario" name="tipoFuncionario">
-            <option value="FuncionarioComum">Funcionário Comum</option>
-            <option value="Gerente">Gerente</option>
-        </select>
+        <a href="index.php">Cancelar</a>
 
-        <label for="salario">Salário:</label>
-        <input type="number" id="salario" name="salario" step="0.01" min="0" required>
+    <?php else: ?>
+        <form method="POST">
+            <label>Nome:</label>
+            <input type="text" name="nome">
+            <br>
 
-        <button type="submit">Cadastrar</button>
-    </form>
+            <label>E-mail:</label>
+            <input type="email" name="email">
+            <br>
 
-    <table>
-        <thead>
+            <label>Salário:</label>
+            <input type="number" name="salario" step="0.01">
+            <br>
+
+            <label>Tipo:</label>
+            <select name="tipo">
+                <option value="FuncionarioComum">Funcionário Comum</option>
+                <option value="Gerente">Gerente</option>
+            </select>
+            <br>
+
+            <button type="submit">Cadastrar</button>
+        </form>
+
+        <h2>Lista de funcionários</h2>
+
+        <table border="1">
             <tr>
                 <th>ID</th>
                 <th>Nome</th>
                 <th>E-mail</th>
-                <th>Tipo</th>
                 <th>Salário</th>
+                <th>Tipo</th>
                 <th>Bônus</th>
                 <th>Ação</th>
             </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($dados['funcionarios'] as $funcionario): ?>
+
+            <?php foreach ($funcionarios as $linha): ?>
                 <tr>
-                    <td><?= htmlspecialchars($funcionario['id']) ?></td>
-                    <td><?= htmlspecialchars($funcionario['nome']) ?></td>
-                    <td><?= htmlspecialchars($funcionario['email']) ?></td>
-                    <td><?= htmlspecialchars($funcionario['tipoFuncionario']) ?></td>
-                    <td>R$ <?= number_format((float) $funcionario['salario'], 2, ',', '.') ?></td>
-                    <td>R$ <?= number_format((float) $funcionario['bonus'], 2, ',', '.') ?></td>
+                    <td><?= $linha['id'] ?></td>
+                    <td><?= $linha['nome'] ?></td>
+                    <td><?= $linha['email'] ?></td>
+                    <td><?= $linha['salario'] ?></td>
+                    <td><?= $linha['tipo'] ?></td>
+                    <td><?= $linha['bonus'] ?></td>
                     <td>
-                        <form method="POST">
-                            <input type="hidden" name="excluir" value="<?= htmlspecialchars($funcionario['id']) ?>">
-                            <button type="submit">Excluir</button>
-                        </form>
+                        <a href="index.php?excluir=<?= $linha['id'] ?>">Excluir</a>
                     </td>
                 </tr>
             <?php endforeach; ?>
-        </tbody>
-    </table>
+        </table>
+    <?php endif; ?>
 </body>
 </html>

@@ -1,85 +1,32 @@
-<?php 
+<?php
 
-    require_once __DIR__ . '/controllers/FuncionarioController.php';
+session_start();
 
-    abstract class Funcionario {
-        private $nome;
-        private $email;
-        private $salario;
+require_once __DIR__ . '/config/database.php';
+require_once __DIR__ . '/models/Funcionario.php';
+require_once __DIR__ . '/models/FuncionarioModel.php';
+require_once __DIR__ . '/controllers/FuncionarioController.php';
 
-        public function __construct($nome, $email, $salario) {
-            $this->nome = $nome;
-            $this->email = $email;
-            $this->salario = $salario;
-        }
+$mensagem = '';
+$modelo = new FuncionarioModel();
+$controle = new FuncionarioController($modelo);
 
-        public function getNome() {
-            return $this->nome;
-        }
-
-        public function setNome($nome) {
-            $this->nome = $nome;
-        }
-
-        public function getEmail() {
-            return $this->email;
-        }
-
-        public function setEmail($email) {
-            $this->email = $email;
-        }
-
-        public function getSalario() {
-            return $this->salario;
-        }
-
-        public function setSalario($salario) {
-            $this->salario = $salario;
-        }
-
-        abstract public function calcularBonus();
-    }
-
-    class FuncionarioComum extends Funcionario {
-        public function calcularBonus() {
-            return $this->getSalario() * 0.05;
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['confirmarExclusao'])) {
+        $controle->excluir($_POST['id'] ?? 0);
+    } else {
+        $mensagem = $controle->cadastrar($_POST);
+        if ($mensagem !== '') {
+            $_SESSION['mensagem'] = $mensagem;
         }
     }
+}
 
-    class Gerente extends Funcionario {
-        public function calcularBonus() {
-            return $this->getSalario() * 0.15;
-        }
-    }
+if (isset($_SESSION['mensagem'])) {
+    $mensagem = $_SESSION['mensagem'];
+    unset($_SESSION['mensagem']);
+}
 
-    if($_SERVER["REQUEST_METHOD"] === "POST"){
-            $nome = $_POST["nome"] ?? "";
-            $email = $_POST["email"] ?? "";
-            $salario = $_POST["salario"] ?? 0;
-    }
-    
-?>
+$funcionarios = $modelo->listar();
 
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prova Poo</title>
-</head>
-<body>
-    <form method="POST">
-        <label for="nome">Nome:</label>
-        <input type="text" id="nome" name="nome">
-        <p></p>
-        <label for="email">Email:</label>
-        <input type="text" id="email" name="email">
-        <p></p>
-        <label for="tipoFunciionario">Tipo de Funcionario:</label>
-        <input type="text" id="tipoFuncionario" name="tipoFuncionario">
-        <label for="salario">Salário:</label>
-        <input type="text" id="salario" name="salario">
-        <p></p>
-        <button type="submit">Cadastrar</button>
-</body>
-</html>
+require_once __DIR__ . '/views/funcionarios.php';

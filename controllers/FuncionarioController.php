@@ -4,11 +4,11 @@ require_once __DIR__ . '/../models/FuncionarioModel.php';
 
 class FuncionarioController
 {
-    private FuncionarioModel $model;
+    private FuncionarioModel $modelo;
 
     public function __construct()
     {
-        $this->model = new FuncionarioModel();
+        $this->modelo = new FuncionarioModel();
     }
 
     public function processar(): array
@@ -16,23 +16,24 @@ class FuncionarioController
         $mensagem = '';
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if (isset($_POST['excluir'])) {
-                $this->model->excluir((int) $_POST['excluir']);
+            if (isset($_POST['confirmarExclusao']) && isset($_POST['excluir'])) {
+                $this->modelo->excluir((int) $_POST['excluir']);
                 $mensagem = 'Funcionário excluído com sucesso.';
-            } else {
+
+            } elseif (($_POST['acao'] ?? '') === 'cadastrar') {
                 $nome = trim($_POST['nome'] ?? '');
                 $email = trim($_POST['email'] ?? '');
-                $tipoFuncionario = $_POST['tipoFuncionario'] ?? 'FuncionarioComum';
-                $salario = str_replace(',', '.', $_POST['salario'] ?? '0');
+                $salario = trim($_POST['salario'] ?? '');
+                $tipoFuncionario = $_POST['tipoFuncionario'] ?? '';
 
-                if ($nome === '' || $email === '' || !is_numeric($salario)) {
-                    $mensagem = 'Preencha nome, e-mail e salário corretamente.';
+                if ($nome === '' || $email === '' || $salario === '' || $tipoFuncionario === '') {
+                    $mensagem = 'Preencha todos os campos obrigatórios.';
+
+                } elseif (!is_numeric($salario)) {
+                    $mensagem = 'O salário deve ser um número.';
+                    
                 } else {
-                    if (!in_array($tipoFuncionario, ['FuncionarioComum', 'Gerente'], true)) {
-                        $tipoFuncionario = 'FuncionarioComum';
-                    }
-
-                    $this->model->cadastrar($nome, $email, $tipoFuncionario, (float) $salario);
+                    $this->modelo->cadastrar($nome, $email, (float) $salario, $tipoFuncionario);
                     $mensagem = 'Funcionário cadastrado com sucesso.';
                 }
             }
@@ -40,7 +41,7 @@ class FuncionarioController
 
         return [
             'mensagem' => $mensagem,
-            'funcionarios' => $this->model->listar(),
+            'funcionarios' => $this->modelo->listar(),
         ];
     }
 }
