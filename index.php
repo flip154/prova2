@@ -1,9 +1,9 @@
 <?php 
 
     abstract class Funcionario {
-        protected $nome;
-        protected $email;
-        protected $salario;
+        private $nome;
+        private $email;
+        private $salario;
 
         public function __construct($nome, $email, $salario) {
             $this->nome = $nome;
@@ -36,6 +36,18 @@
         }
 
         abstract public function calcularBonus();
+    }
+
+    class FuncionarioComum extends Funcionario {
+        public function calcularBonus() {
+            return $this->getSalario() * 0.05;
+        }
+    }
+
+    class Gerente extends Funcionario {
+        public function calcularBonus() {
+            return $this->getSalario() * 0.15;
+        }
     }
 ?>
 
