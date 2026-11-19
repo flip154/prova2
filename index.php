@@ -73,6 +73,8 @@
         <label for="email">Email:</label>
         <input type="text" id="email" name="email">
         <p></p>
+        <label for="tipoFunciionario">Tipo de Funcionario:</label>
+        <input type="text" id="tipoFuncionario" name="tipoFuncionario">
         <label for="salario">Salário:</label>
         <input type="text" id="salario" name="salario">
         <p></p>
