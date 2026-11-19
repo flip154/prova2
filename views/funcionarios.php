@@ -2,6 +2,7 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="../css/funcionarios.css">
     <title>Cadastro de Funcionários</title>
 </head>
 <body>
@@ -49,7 +50,7 @@
 
         <h2>Lista de funcionários</h2>
 
-        <table border="1">
+        <table>
             <tr>
                 <th>ID</th>
                 <th>Nome</th>
