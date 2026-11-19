@@ -40,7 +40,7 @@
 
             <label>Tipo:</label>
             <select name="tipo">
-                <option value="FuncionarioComum">Funcionário Comum</option>
+                <option value="FuncionarioComum">Funcionário</option>
                 <option value="Gerente">Gerente</option>
             </select>
             <br>
