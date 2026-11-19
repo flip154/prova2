@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="../css/funcionarios.css">
+    <link rel="stylesheet" href="/css/funcionarios.css">
     <title>Cadastro de Funcionários</title>
 </head>
 <body>
