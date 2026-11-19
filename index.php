@@ -49,6 +49,12 @@
             return $this->getSalario() * 0.15;
         }
     }
+
+    if($_SERVER["REQUEST_METHOD"] === "POST"){
+            $nome = $_POST["nome"] ?? "";
+            $email = $_POST["email"] ?? "";
+            $salario = $_POST["salario"] ?? 0;
+    }
     
 ?>
 
