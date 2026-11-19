@@ -7,19 +7,22 @@ require_once __DIR__ . '/models/Funcionario.php';
 require_once __DIR__ . '/models/FuncionarioModel.php';
 require_once __DIR__ . '/controllers/FuncionarioController.php';
 
-$mensagem = '';
 $modelo = new FuncionarioModel();
 $controle = new FuncionarioController($modelo);
 
+$mensagem = '';
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['confirmarExclusao'])) {
-        $controle->excluir($_POST['id'] ?? 0);
+        $id = $_POST['id'] ?? 0;
+        $mensagem = $controle->excluir($id);
     } else {
         $mensagem = $controle->cadastrar($_POST);
-        if ($mensagem !== '') {
-            $_SESSION['mensagem'] = $mensagem;
-        }
     }
+
+    $_SESSION['mensagem'] = $mensagem;
+    header('Location: index.php');
+    exit;
 }
 
 if (isset($_SESSION['mensagem'])) {

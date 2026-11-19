@@ -1,15 +1,19 @@
+<?php
+$mensagem = $mensagem ?? '';
+$funcionarios = $funcionarios ?? [];
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="/css/funcionarios.css">
     <title>Cadastro de Funcionários</title>
+    <link rel="stylesheet" href="css/funcionarios.css">
 </head>
 <body>
     <h1>Cadastro de Funcionários</h1>
 
     <?php if ($mensagem != ''): ?>
-        <p><?= $mensagem ?></p>
+        <p><?= htmlspecialchars($mensagem) ?></p>
     <?php endif; ?>
 
     <?php if (isset($_GET['excluir'])): ?>
@@ -18,7 +22,7 @@
 
         <form method="POST">
             <input type="hidden" name="confirmarExclusao" value="sim">
-            <input type="hidden" name="id" value="<?= $_GET['excluir'] ?>">
+            <input type="hidden" name="id" value="<?= (int) $_GET['excluir'] ?>">
             <button type="submit">Confirmar exclusão</button>
         </form>
 
@@ -27,19 +31,19 @@
     <?php else: ?>
         <form method="POST">
             <label>Nome:</label>
-            <input type="text" name="nome">
+            <input type="text" name="nome" required>
             <br>
 
             <label>E-mail:</label>
-            <input type="email" name="email">
+            <input type="email" name="email" required>
             <br>
 
             <label>Salário:</label>
-            <input type="number" name="salario" step="0.01">
+            <input type="number" name="salario" step="0.01" min="0" required>
             <br>
 
             <label>Tipo:</label>
-            <select name="tipo">
+            <select name="tipo" required>
                 <option value="FuncionarioComum">Funcionário</option>
                 <option value="Gerente">Gerente</option>
             </select>
@@ -63,14 +67,14 @@
 
             <?php foreach ($funcionarios as $linha): ?>
                 <tr>
-                    <td><?= $linha['id'] ?></td>
-                    <td><?= $linha['nome'] ?></td>
-                    <td><?= $linha['email'] ?></td>
-                    <td><?= $linha['salario'] ?></td>
-                    <td><?= $linha['tipo'] ?></td>
-                    <td><?= $linha['bonus'] ?></td>
+                    <td><?= (int) $linha['id'] ?></td>
+                    <td><?= htmlspecialchars($linha['nome']) ?></td>
+                    <td><?= htmlspecialchars($linha['email']) ?></td>
+                    <td><?= number_format((float) $linha['salario'], 2, ',', '.') ?></td>
+                    <td><?= htmlspecialchars($linha['tipo']) ?></td>
+                    <td><?= number_format((float) $linha['bonus'], 2, ',', '.') ?></td>
                     <td>
-                        <a href="index.php?excluir=<?= $linha['id'] ?>">Excluir</a>
+                        <a href="index.php?excluir=<?= (int) $linha['id'] ?>">Excluir</a>
                     </td>
                 </tr>
             <?php endforeach; ?>
